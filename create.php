@@ -1,9 +1,12 @@
 <?php
+session_start(); // Start a session
+
 require_once('functions.php'); // Include the validation functions
 
 // Initialize variables for form data and error messages
 $productID = $name = $price = '';
 $productIDErr = $nameErr = $priceErr = '';
+$showProduct = false;
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -40,10 +43,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // If all fields pass validation, redirect to the index page
+    // If all fields pass validation, store the product data in the session and show the product
     if (empty($productIDErr) && empty($nameErr) && empty($priceErr)) {
-        header("Location: index.php");
-        exit();
+        $newProduct = [
+            'productID' => $productID,
+            'name' => $name,
+            'price' => $price,
+        ];
+
+        // Check if a product array exists in the session
+        if (isset($_SESSION['products'])) {
+            $_SESSION['products'][] = $newProduct;
+        } else {
+            // If it doesn't exist, create a new array with the product
+            $_SESSION['products'] = [$newProduct];
+        }
+
+        $showProduct = true; // Set to true to display the newly created product
     }
 }
 ?>
@@ -71,21 +87,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </ul>
     </nav>
     <main class="container mt-4">
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <label for="productID">Product ID:</label>
-            <input type="number" name="productID" id="productID" value="<?php echo $productID; ?>" required>
-            <span class="error-message"><?php echo $productIDErr; ?></span>
-            
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" value="<?php echo $name; ?>" required>
-            <span class="error-message"><?php echo $nameErr; ?></span>
-            
-            <label for="price">Price:</label>
-            <input type="number" step="0.01" name="price" id="price" value="<?php echo $price; ?>" required>
-            <span class "error-message"><?php echo $priceErr; ?></span>
-            
-            <input type="submit" value="Create Product">
-        </form>
+        <?php
+        if ($showProduct) {
+            // Display the newly created product
+            echo '<h2>New Product Created</h2>';
+            echo '<p><strong>Product ID:</strong> ' . $productID . '</p>';
+            echo '<p><strong>Name:</strong> ' . $name . '</p>';
+            echo '<p><strong>Price:</strong> ' . $price . '</p>';
+        } else {
+            // Display the form for creating a product
+            echo '<h2>Create Product</h2>';
+            echo '<form method="post" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">';
+            echo '<label for="productID">Product ID:</label>';
+            echo '<input type="number" name="productID" id="productID" value="' . $productID . '" required>';
+            echo '<span class="error-message">' . $productIDErr . '</span>';
+            echo '<label for="name">Name:</label>';
+            echo '<input type="text" name="name" id="name" value="' . $name . '" required>';
+            echo '<span class="error-message">' . $nameErr . '</span>';
+            echo '<label for="price">Price:</label>';
+            echo '<input type="number" step="0.01" name="price" id="price" value="' . $price . '" required>';
+            echo '<span class="error-message">' . $priceErr . '</span>';
+            echo '<input type="submit" value="Create Product">';
+            echo '</form>';
+        }
+        ?>
     </main>
 </body>
 </html>
