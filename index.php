@@ -39,7 +39,7 @@
                 echo '<li>';
                 echo '<h3>Order #' . $order['orderID'] . '</h3>';
                 echo '<p>Order Date: ' . $order['orderDate'] . '</p>';
-                // Add more fields here as needed
+                echo 'a href=details.php?orderID=' . $order['orderID'] . '">View Products</a>';
                 echo '</li>';
             }
             echo '</ul>';

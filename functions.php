@@ -1,13 +1,14 @@
 <?php
-function validateProductID($productID) {
-    return filter_var($productID, FILTER_VALIDATE_INT) && $productID > 0;
+// Validation functions
+function isPositiveInteger($value) {
+    return preg_match("/^[1-9][0-9]*$/", $value);
 }
 
-function validateName($name) {
-    return preg_match("/^[A-Z][A-Za-z0-9 ]*$/", $name);
+function isValidName($value) {
+    return preg_match("/^[A-Z][A-Za-z0-9 ]*$/", $value);
 }
 
-function validatePrice($price) {
-    return filter_var($price, FILTER_VALIDATE_FLOAT) && $price >= 1 && $price <= 1000;
+function isPositiveDecimalInRange($value, $min, $max) {
+    return filter_var($value, FILTER_VALIDATE_FLOAT, array("options" => array("min_range" => $min, "max_range" => $max)));
 }
 ?>
