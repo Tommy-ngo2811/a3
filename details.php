@@ -1,3 +1,28 @@
+<?php
+// Check if orderID is provided as a query parameter
+if (isset($_GET['orderID'])) {
+    $orderID = $_GET['orderID'];
+
+    // Construct the URL to the web service using the orderID
+    $serviceURL = "https://titan.csit.rmit.edu.au/~e103884/wp/.services/.orders/?id=" . $orderID;
+
+    // Fetch data from the web service
+    $orderData = file_get_contents($serviceURL);
+    $order = json_decode($orderData, true);
+
+    if ($order) {
+        // Extract order details
+        $orderID = $order['orderID'];
+        $orderDate = $order['orderDate'];
+        $products = $order['products'];
+    }
+} else {
+    // Redirect to the index page if orderID is not provided
+    header("Location: index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +33,7 @@
 </head>
 <body>
     <header class="bg-dark text-white text-center p-4">
-        <h1>Order Details</h1>
+        <h1>Order #<?php echo $orderID; ?></h1>
     </header>
     <nav class="navbar navbar-expand navbar-light bg-light">
         <ul class="navbar-nav">
@@ -21,33 +46,25 @@
         </ul>
     </nav>
     <main class="container mt-4">
-        <?php
-        // Check if orderID is provided in the query string
-        if (isset($_GET['orderID'])) {
-            $orderID = $_GET['orderID'];
-            
-            // Fetch data for the specific order using the provided orderID
-            $orderDetailsData = file_get_contents('https://titan.csit.rmit.edu.au/~e103884/wp/.services/.orders/?id=' . $orderID);
-            $orderDetails = json_decode($orderDetailsData, true);
-            
-            // Display order details
-            if (!empty($orderDetails)) {
-                echo '<h2>Order #' . $orderID . ' Details</h2>';
-                echo '<ul>';
-                foreach ($orderDetails as $product) {
+        <h2>Order Details</h2>
+        <p><strong>Order Date:</strong> <?php echo $orderDate; ?></p>
+        
+        <h3>Products in this Order</h3>
+        <ul>
+            <?php
+            if (!empty($products)) {
+                foreach ($products as $product) {
                     echo '<li>';
-                    echo '<p>Product Name: ' . $product['name'] . '</p>';
-                    
+                    echo '<p><strong>Product ID:</strong> ' . $product['productID'] . '</p>';
+                    echo '<p><strong>Name:</strong> ' . $product['name'] . '</p>';
+                    echo '<p><strong>Price:</strong> ' . $product['price'] . '</p>';
                     echo '</li>';
                 }
-                echo '</ul>';
             } else {
-                echo '<p>No details available for this order.</p>';
+                echo '<p>No products in this order.</p>';
             }
-        } else {
-            echo '<p>Order ID not provided.</p>';
-        }
-        ?>
+            ?>
+        </ul>
     </main>
 </body>
 </html>

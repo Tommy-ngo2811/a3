@@ -1,6 +1,4 @@
 <?php
-session_start(); // Start a session
-
 // Fetch data from the web service (Task C)
 $ordersData = file_get_contents('https://titan.csit.rmit.edu.au/~e103884/wp/.services/.orders/');
 $orders = json_decode($ordersData, true);
@@ -11,6 +9,7 @@ $orders = json_decode($ordersData, true);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="a3.css">
     <title>Assignment 3</title>
 </head>
@@ -29,36 +28,32 @@ $orders = json_decode($ordersData, true);
         </ul>
     </nav>
     <main class="container mt-4">
-        <h2>Orders</h2>
-        <ul>
-            <?php
-            // Display orders from the web service (Task C)
-            if (!empty($orders)) {
-                foreach ($orders as $order) {
-                    echo '<li>';
-                    echo '<h3>Order #' . $order['orderID'] . '</h3>';
-                    echo '<p>Order Date: ' . $order['orderDate'] . '</p>';
-                    echo '<a href="details.php?orderID=' . $order['orderID'] . '">View Products</a>';
-                    echo '</li>';
+        <div class="container">
+            <h2 class="mb-4">Orders</h2>
+            <ul class="list-group">
+                <?php
+                // Display orders from the web service (Task C)
+                if (!empty($orders)) {
+                    foreach ($orders as $order) {
+                        echo '<li class="list-group-item">';
+                        echo '<h3 class="mb-2">Order #' . $order['orderID'] . '</h3>';
+                        echo '<p class="mb-2">Order Date: ' . $order['orderDate'] . '</p>';
+                        echo '<a href="details.php?orderID=' . $order['orderID'] . '" class="btn btn-primary">View Products</a>';
+                        echo '</li>';
+                    }
+                } else {
+                    echo '<li class="list-group-item">No orders available.</li>';
                 }
-            } else {
-                echo '<p>No orders available.</p>';
-            }
-
-            // Display newly created products from the session
-            if (isset($_SESSION['products'])) {
-                foreach ($_SESSION['products'] as $product) {
-                    echo '<li>';
-                    echo '<h3>Product ID: ' . $product['productID'] . '</h3>';
-                    echo '<p>Name: ' . $product['name'] . '</p>';
-                    echo '<p>Price: ' . $product['price'] . '</p>';
-                    echo '</li>';
-                }
-            }
-            ?>
-        </ul>
+                ?>
+            </ul>
+        </div>
     </main>
-    
-    <?php require_once("footer.php"); ?>
+    <footer>
+        <!-- Add your footer content here -->
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
