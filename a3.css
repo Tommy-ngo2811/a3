@@ -1,0 +1,28 @@
+/* a3.css */
+/* ... your existing CSS styles ... */
+
+/* Sitemap styling */
+footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer ul li {
+    margin: 10px 0;
+}
+
+footer ul ul {
+    padding-left: 20px; /* Indent nested lists */
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+footer a:hover {
+    color: #ffc107; /* Change color on hover */
+}
