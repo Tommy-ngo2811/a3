@@ -24,24 +24,28 @@
             </li>
         </ul>
     </nav>
+
     <main class="container mt-4">
-        <!-- Your main content goes here -->
+        <?php
+        // Fetch data from the web service
+        $ordersData = file_get_contents('https://titan.csit.rmit.edu.au/~e103884/wp/.services/.orders/');
+        $orders = json_decode($ordersData, true);
+
+        // Display orders
+        if (!empty($orders)) {
+            echo '<h2>Orders</h2>';
+            echo '<ul>';
+            foreach ($orders as $order) {
+                echo '<li>';
+                echo '<h3>Order #' . $order['orderID'] . '</h3>';
+                echo '<p>Order Date: ' . $order['orderDate'] . '</p>';
+                // Add more fields here as needed
+                echo '</li>';
+            }
+            echo '</ul>';
+        }
+        ?>
     </main>
-    <footer class="bg-dark text-white text-center p-3">
-        <h2>Sitemap</h2>
-        <ul>
-            <li><a href="index.php">Assignment 3</a>
-                <ul>
-                    <li><a href="index.php">View All Orders</a></li>
-                    <li><a href="create.php">Create Product</a></li>
-                    <li><a href="https://github.com/rmit-wp-s2-2023/s3900254-a3">GitHub</a>
-                        <ul>
-                            <li><a href="https://github.com/rmit-wp-s2-2023/s3900254-a3">Repository</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </footer>
+    <?php require_once("footer.php"); ?>
 </body>
 </html>
