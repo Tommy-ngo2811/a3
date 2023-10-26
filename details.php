@@ -29,6 +29,8 @@ if (isset($_GET['orderID'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="a3.css">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <title>Order Details</title>
 </head>
 <body>
@@ -40,7 +42,7 @@ if (isset($_GET['orderID'])) {
             <li class="nav-item">
                 <a class="nav-link" href="index.php">View All Orders</a>
             </li>
-            <li class="nav-item">
+            <li class "nav-item">
                 <a class="nav-link" href="create.php">Create Product</a>
             </li>
         </ul>
@@ -50,11 +52,11 @@ if (isset($_GET['orderID'])) {
         <p><strong>Order Date:</strong> <?php echo $orderDate; ?></p>
         
         <h3>Products in this Order</h3>
-        <ul>
+        <ul class="list-group">
             <?php
             if (!empty($products)) {
                 foreach ($products as $product) {
-                    echo '<li>';
+                    echo '<li class="list-group-item">';
                     if (isset($product['productID'])) {
                         echo '<p><strong>Product ID:</strong> ' . $product['productID'] . '</p>';
                     }
@@ -62,7 +64,7 @@ if (isset($_GET['orderID'])) {
                         echo '<p><strong>Name:</strong> ' . $product['name'] . '</p>';
                     }
                     if (isset($product['price'])) {
-                        echo '<p><strong>Price:</strong> ' . $product['price'] . '</p>';
+                        echo '<p><strong>Price:</strong> $' . $product['price'] . '</p>';
                     }
                     echo '</li>';
                 }
@@ -72,7 +74,11 @@ if (isset($_GET['orderID'])) {
             ?>
         </ul>
     </main>
-
     
+    <?php require_once("footer.php"); ?>
+    
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
 </body>
 </html>

@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </main>
     <footer class="bg-dark text-white text-center p-4">
-        <!-- Add your sitemap content here, or use JavaScript to populate it -->
+    <?php require_once("footer.php"); ?>
     </footer>
     <!-- Include Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
