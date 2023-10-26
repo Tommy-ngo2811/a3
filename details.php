@@ -17,7 +17,7 @@ if (isset($_GET['orderID'])) {
         $products = $order['products'];
     }
 } else {
-    // Redirect to the index page if orderID is not provided
+    // Handle the case where orderID is not provided
     header("Location: index.php");
     exit();
 }
@@ -55,9 +55,15 @@ if (isset($_GET['orderID'])) {
             if (!empty($products)) {
                 foreach ($products as $product) {
                     echo '<li>';
-                    echo '<p><strong>Product ID:</strong> ' . $product['productID'] . '</p>';
-                    echo '<p><strong>Name:</strong> ' . $product['name'] . '</p>';
-                    echo '<p><strong>Price:</strong> ' . $product['price'] . '</p>';
+                    if (isset($product['productID'])) {
+                        echo '<p><strong>Product ID:</strong> ' . $product['productID'] . '</p>';
+                    }
+                    if (isset($product['name'])) {
+                        echo '<p><strong>Name:</strong> ' . $product['name'] . '</p>';
+                    }
+                    if (isset($product['price'])) {
+                        echo '<p><strong>Price:</strong> ' . $product['price'] . '</p>';
+                    }
                     echo '</li>';
                 }
             } else {
@@ -66,5 +72,7 @@ if (isset($_GET['orderID'])) {
             ?>
         </ul>
     </main>
+
+    
 </body>
 </html>
